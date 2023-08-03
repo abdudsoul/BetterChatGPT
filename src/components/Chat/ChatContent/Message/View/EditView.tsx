@@ -10,6 +10,8 @@ import PopupModal from '@components/PopupModal';
 import TokenCount from '@components/TokenCount';
 import CommandPrompt from '../CommandPrompt';
 
+import PromptInputTokenCount from '@components/PromptInputTokenCount';
+
 const EditView = ({
   content,
   setIsEdit,
@@ -121,6 +123,7 @@ const EditView = ({
 
   return (
     <>
+      <PromptInputTokenCount content={_content} role={inputRole} />
       <div
         className={`w-full ${
           sticky
