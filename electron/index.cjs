@@ -1,6 +1,6 @@
 const path = require('path');
 
-const {dialog,  app, BrowserWindow, Tray, Menu } = require('electron');
+const { dialog, app, BrowserWindow, Tray, Menu, MenuItem } = require('electron');
 const isDev = require('electron-is-dev');
 const { autoUpdater } = require('electron-updater');
 let win = null;
@@ -13,11 +13,12 @@ const PORT = isDev ? '5173' : '51735';
 const ICON = 'icon-rounded.png';
 const ICON_TEMPLATE = 'iconTemplate.png';
 
-function createWindow() {
+function createWindow ()
+{
   autoUpdater.checkForUpdatesAndNotify();
 
   win = new BrowserWindow({
-	autoHideMenuBar: true,
+    autoHideMenuBar: true,
     show: false,
     icon: assetPath(ICON),
   });
@@ -29,44 +30,50 @@ function createWindow() {
 
   isDev || createServer();
 
-  win.loadURL(`http://localhost:${PORT}`);
+  win.loadURL(`http://localhost:${ PORT }`);
 
-  if (isDev) {
+  if (isDev)
+  {
     win.webContents.openDevTools({ mode: 'detach' });
   }
 
   return win;
 }
 
-const assetPath = (asset) => {
+const assetPath = (asset) =>
+{
   return path.join(
     __dirname,
-    isDev ? `../public/${asset}` : `../dist/${asset}`
-  )
-}
+    isDev ? `../public/${ asset }` : `../dist/${ asset }`
+  );
+};
 
-const createTray = (window) => {
+const createTray = (window) =>
+{
   const tray = new Tray(
     assetPath(!isMacOS ? ICON : ICON_TEMPLATE)
   );
   const contextMenu = Menu.buildFromTemplate([
     {
       label: 'Show',
-      click: () => {
+      click: () =>
+      {
         win.maximize();
         window.show();
       },
     },
     {
       label: 'Exit',
-      click: () => {
+      click: () =>
+      {
         app.isQuiting = true;
         app.quit();
       },
     },
   ]);
 
-  tray.on('click', () => {
+  tray.on('click', () =>
+  {
     win.maximize();
     window.show();
   });
@@ -76,13 +83,16 @@ const createTray = (window) => {
   return tray;
 };
 
-app.on('window-all-closed', () => {
-  if (!isMacOS) {
+app.on('window-all-closed', () =>
+{
+  if (!isMacOS)
+  {
     app.quit();
   }
 });
 
-process.on('uncaughtException', (error) => {
+process.on('uncaughtException', (error) =>
+{
   // Perform any necessary cleanup tasks here
   dialog.showErrorBox('An error occurred', error.stack);
 
@@ -90,22 +100,55 @@ process.on('uncaughtException', (error) => {
   process.exit(1);
 });
 
-if (!instanceLock) {
-  app.quit()
-} else {
-  app.on('second-instance', (event, commandLine, workingDirectory) => {
-    if (win) {
-      if (win.isMinimized()) win.restore()
-      win.focus()
+if (!instanceLock)
+{
+  app.quit();
+} else
+{
+  app.on('second-instance', (event, commandLine, workingDirectory) =>
+  {
+    if (win)
+    {
+      if (win.isMinimized()) win.restore();
+      win.focus();
     }
-  })
+  });
 
-  app.whenReady().then(() => {
-    win = createWindow()
-  })
+  app.whenReady().then(() =>
+  {
+    win = createWindow();
+
+    win.webContents.on('context-menu', (event, params) =>
+    {
+      const menu = new Menu();
+
+      // Add each spelling suggestion
+      for (const suggestion of params.dictionarySuggestions)
+      {
+        menu.append(new MenuItem({
+          label: suggestion,
+          click: () => win.webContents.replaceMisspelling(suggestion)
+        }));
+      }
+
+      // Allow users to add the misspelled word to the dictionary
+      if (params.misspelledWord)
+      {
+        menu.append(
+          new MenuItem({
+            label: 'Add to dictionary',
+            click: () => win.webContents.session.addWordToSpellCheckerDictionary(params.misspelledWord)
+          })
+        );
+      }
+
+      menu.popup();
+    });
+  });
 }
 
-const createServer = () => {
+const createServer = () =>
+{
   // Dependencies
   const http = require('http');
   const fs = require('fs');
@@ -126,12 +169,13 @@ const createServer = () => {
   };
 
   // Create a http server
-  const server = http.createServer((request, response) => {
+  const server = http.createServer((request, response) =>
+  {
     // Get the file path from the URL
     let filePath =
       request.url === '/'
-        ? `${path.join(__dirname, '../dist/index.html')}`
-        : `${path.join(__dirname, `../dist/${request.url}`)}`;
+        ? `${ path.join(__dirname, '../dist/index.html') }`
+        : `${ path.join(__dirname, `../dist/${ request.url }`) }`;
 
     // Get the file extension from the filePath
     let extname = path.extname(filePath);
@@ -140,24 +184,30 @@ const createServer = () => {
     let contentType = 'text/plain';
 
     // Check if the file extension is in the MIME types object
-    if (extname in mimeTypes) {
-      contentType = mimeTypes[extname];
+    if (extname in mimeTypes)
+    {
+      contentType = mimeTypes[ extname ];
     }
 
     // Read the file from the disk
-    fs.readFile(filePath, (error, content) => {
-      if (error) {
+    fs.readFile(filePath, (error, content) =>
+    {
+      if (error)
+      {
         // If file read error occurs
-        if (error.code === 'ENOENT') {
+        if (error.code === 'ENOENT')
+        {
           // File not found error
           response.writeHead(404);
           response.end('File Not Found');
-        } else {
+        } else
+        {
           // Server error
           response.writeHead(500);
-          response.end(`Server Error: ${error.code}`);
+          response.end(`Server Error: ${ error.code }`);
         }
-      } else {
+      } else
+      {
         // File read successful
         response.writeHead(200, { 'Content-Type': contentType });
         response.end(content, 'utf-8');
@@ -166,7 +216,8 @@ const createServer = () => {
   });
 
   // Listen for request on port ${PORT}
-  server.listen(PORT, () => {
-    console.log(`Server listening on http://localhost:${PORT}/`);
+  server.listen(PORT, () =>
+  {
+    console.log(`Server listening on http://localhost:${ PORT }/`);
   });
 };

@@ -1,5 +1,5 @@
 {
-  "name": "better-chatgpt",
+  "name": "better-chatgpt-openrouterai",
   "private": true,
   "version": "1.0.4",
   "type": "module",
@@ -11,13 +11,13 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "electron": "concurrently -k \"BROWSER=none npm run dev\" \"wait-on tcp:5173 && electron .\"",
+    "electron": "npx concurrently -k \"SET BROWSER=none&&npm run dev\" \"wait-on tcp:5173 && electron .\"",
     "pack": "npm run build && electron-builder --dir",
     "make": "npm run build && electron-builder"
   },
   "build": {
-    "appId": "better-chatgpt",
-    "productName": "Better ChatGPT",
+    "appId": "better-chatgpt-openrouterai",
+    "productName": "Better ChatGPT | OpenRouter.AI",
     "artifactName": "${os}-${name}-${version}-${arch}.${ext}",
     "directories": {
       "output": "release"
@@ -79,7 +79,7 @@
     "@types/uuid": "^9.0.1",
     "@vitejs/plugin-react-swc": "^3.0.0",
     "autoprefixer": "^10.4.13",
-    "concurrently": "^8.0.1",
+    "concurrently": "^8.2.0",
     "electron": "^23.2.0",
     "electron-builder": "^23.6.0",
     "postcss": "^8.4.21",
