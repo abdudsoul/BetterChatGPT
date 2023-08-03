@@ -1,3 +1,5 @@
+<h3 align="center">This fork has been changed to only support https://openrouter.ai/</h3>
+
 <h1 align="center"><b>Better ChatGPT</b></h1>
 
 <p align="center">

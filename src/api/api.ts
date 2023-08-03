@@ -1,6 +1,6 @@
 import { ShareGPTSubmitBodyInterface } from '@type/api';
 import { ConfigInterface, MessageInterface } from '@type/chat';
-import { isAzureEndpoint } from '@utils/api';
+import { isAzureEndpoint, isOpenRouterEndpoint } from '@utils/api';
 
 export const getChatCompletion = async (
   endpoint: string,
@@ -20,7 +20,7 @@ export const getChatCompletion = async (
 
     const gpt3forAzure = 'gpt-35-turbo';
     const model =
-      config.model === 'gpt-3.5-turbo' ? gpt3forAzure : config.model;
+      config.model === 'openai/gpt-3.5-turbo' ? gpt3forAzure : config.model;
     const apiVersion = '2023-03-15-preview';
 
     const path = `openai/deployments/${model}/chat/completions?api-version=${apiVersion}`;
@@ -31,6 +31,12 @@ export const getChatCompletion = async (
       }
       endpoint += path;
     }
+  }
+
+  if (isOpenRouterEndpoint(endpoint) && apiKey)
+  {
+      headers['HTTP-Referer'] = "https://github.com/ztjhz/BetterChatGPT";
+      headers['X-Title'] = "BetterChatGPT";
   }
 
   const response = await fetch(endpoint, {
@@ -66,7 +72,7 @@ export const getChatCompletionStream = async (
 
     const gpt3forAzure = 'gpt-35-turbo';
     const model =
-      config.model === 'gpt-3.5-turbo' ? gpt3forAzure : config.model;
+      config.model === 'openai/gpt-3.5-turbo' ? gpt3forAzure : config.model;
     const apiVersion = '2023-03-15-preview';
 
     const path = `openai/deployments/${model}/chat/completions?api-version=${apiVersion}`;
@@ -77,6 +83,12 @@ export const getChatCompletionStream = async (
       }
       endpoint += path;
     }
+  }
+
+  if (isOpenRouterEndpoint(endpoint) && apiKey)
+  {
+      headers['HTTP-Referer'] = "https://github.com/ztjhz/BetterChatGPT";
+      headers['X-Title'] = "BetterChatGPT";
   }
 
   const response = await fetch(endpoint, {

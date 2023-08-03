@@ -49,10 +49,7 @@ export interface Folder {
   color?: string;
 }
 
-export type ModelOptions = 'gpt-4' | 'gpt-4-32k' | 'gpt-3.5-turbo' | 'gpt-3.5-turbo-16k' ;
-// | 'gpt-3.5-turbo-0301';
-// | 'gpt-4-0314'
-// | 'gpt-4-32k-0314'
+export type ModelOptions = 'openai/gpt-4' | 'openai/gpt-4-32k' | 'openai/gpt-3.5-turbo' | 'openai/gpt-3.5-turbo-16k' | 'anthropic/claude-2' | 'anthropic/claude-instant-v1' | 'google/palm-2-chat-bison' | 'google/palm-2-codechat-bison' | 'meta-llama/llama-2-13b-chat' | 'meta-llama/llama-2-70b-chat';
 
 export type TotalTokenUsed = {
   [model in ModelOptions]?: {

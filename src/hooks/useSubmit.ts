@@ -110,9 +110,11 @@ const useSubmit = () => {
         let partial = '';
         while (reading && useStore.getState().generating) {
           const { done, value } = await reader.read();
+
           const result = parseEventSource(
             partial + new TextDecoder().decode(value)
           );
+
           partial = '';
 
           if (result === '[DONE]' || done) {
@@ -120,6 +122,9 @@ const useSubmit = () => {
           } else {
             const resultString = result.reduce((output: string, curr) => {
               if (typeof curr === 'string') {
+                // @ts-ignore
+                if (curr === ": OPENROUTER PROCESSING")
+                  return "";
                 partial += curr;
               } else {
                 const content = curr.choices[0].delta.content;
