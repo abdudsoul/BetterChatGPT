@@ -4,4 +4,6 @@ const customAPIEndpoint =
 export const defaultAPIEndpoint =
   import.meta.env.VITE_DEFAULT_API_ENDPOINT || officialAPIEndpoint;
 
-export const availableEndpoints = [officialAPIEndpoint, customAPIEndpoint];
+export const officialOpenRouterAPIEndpoint = "https://openrouter.ai/api/v1/chat/completions"
+
+export const availableEndpoints = [officialOpenRouterAPIEndpoint];
