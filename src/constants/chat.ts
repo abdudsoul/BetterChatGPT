@@ -27,9 +27,7 @@ export async function initaliseModelData(): Promise<boolean>
       // clear default arrays
       modelOptions = [];
       defaultModel = "";
-      // @ts-ignore
       modelMaxToken = {};
-      // @ts-ignore
       modelCost = {};
 
       // @ts-ignore
@@ -78,7 +76,7 @@ export var modelOptions: ModelOptions[] = [
 
 export var defaultModel = 'openai/gpt-3.5-turbo';
 
-export var modelMaxToken = {
+export var modelMaxToken: object = {
   'openai/gpt-3.5-turbo': 4096,
   'openai/gpt-3.5-turbo-16k': 16384,
   'openai/gpt-4': 8192,
@@ -91,7 +89,7 @@ export var modelMaxToken = {
   'meta-llama/llama-2-70b-chat': 100000,
 };
 
-export var modelCost = {
+export var modelCost: object = {
   'openai/gpt-3.5-turbo': {
     prompt: { price: 0.0015, unit: 1000 },
     completion: { price: 0.002, unit: 1000 },
