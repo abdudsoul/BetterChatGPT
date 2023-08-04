@@ -51,6 +51,23 @@ export interface Folder {
 
 export type ModelOptions = string;
 
+export interface ModelMaxToken {
+  [key: string]: number;
+}
+
+export interface ModelCost {
+  [key: string]: {
+    prompt: {
+      price: number;
+      unit: number;
+    },
+    completion: {
+      price: number;
+      unit: number;
+    }
+  }
+}
+
 export type TotalTokenUsed = {
   [model in ModelOptions]?: {
     promptTokens: number;

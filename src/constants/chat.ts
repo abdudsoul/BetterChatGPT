@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { ChatInterface, ConfigInterface, ModelOptions } from '@type/chat';
+import { ChatInterface, ConfigInterface, ModelOptions, ModelMaxToken, ModelCost } from '@type/chat';
 import useStore from '@store/store';
 
 const date = new Date();
@@ -41,10 +41,8 @@ export async function initaliseModelData(): Promise<boolean>
       // @ts-ignore
       data.data.forEach(model =>
       {
-        // @ts-ignore
         modelMaxToken[model.id] = model.context_length;
 
-        // @ts-ignore
         modelCost[model.id] = {
           prompt: { price: parseFloat(model.pricing.prompt), unit: 1 },
           completion: { price: parseFloat(model.pricing.completion), unit: 1 },
@@ -76,7 +74,7 @@ export var modelOptions: ModelOptions[] = [
 
 export var defaultModel = 'openai/gpt-3.5-turbo';
 
-export var modelMaxToken: object = {
+export var modelMaxToken: ModelMaxToken = {
   'openai/gpt-3.5-turbo': 4096,
   'openai/gpt-3.5-turbo-16k': 16384,
   'openai/gpt-4': 8192,
@@ -89,7 +87,7 @@ export var modelMaxToken: object = {
   'meta-llama/llama-2-70b-chat': 100000,
 };
 
-export var modelCost: object = {
+export var modelCost: ModelCost = {
   'openai/gpt-3.5-turbo': {
     prompt: { price: 0.0015, unit: 1000 },
     completion: { price: 0.002, unit: 1000 },
