@@ -35,8 +35,8 @@ export const getChatCompletion = async (
 
   if (isOpenRouterEndpoint(endpoint) && apiKey)
   {
-      headers['HTTP-Referer'] = "https://github.com/ztjhz/BetterChatGPT";
-      headers['X-Title'] = "BetterChatGPT";
+      headers['HTTP-Referer'] = "https://github.com/abdudsoul/BetterChatGPT";
+      headers['X-Title'] = "BetterChatGPT | OpenRouterAI";
   }
 
   const response = await fetch(endpoint, {
@@ -87,8 +87,8 @@ export const getChatCompletionStream = async (
 
   if (isOpenRouterEndpoint(endpoint) && apiKey)
   {
-      headers['HTTP-Referer'] = "https://github.com/ztjhz/BetterChatGPT";
-      headers['X-Title'] = "BetterChatGPT";
+      headers['HTTP-Referer'] = "https://github.com/abdudsoul/BetterChatGPT";
+      headers['X-Title'] = "BetterChatGPT | OpenRouterAI";
   }
 
   const response = await fetch(endpoint, {
