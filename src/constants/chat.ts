@@ -46,8 +46,8 @@ export async function initaliseModelData(): Promise<boolean>
 
         // @ts-ignore
         modelCost[model.id] = {
-          prompt: { price: parseFloat(model.pricing.prompt), unit: 1000 },
-          completion: { price: parseFloat(model.pricing.completion), unit: 1000 },
+          prompt: { price: parseFloat(model.pricing.prompt), unit: 1 },
+          completion: { price: parseFloat(model.pricing.completion), unit: 1 },
         }; 
       });
 
