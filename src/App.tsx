@@ -11,64 +11,90 @@ import { Theme } from '@type/theme';
 import ApiPopup from '@components/ApiPopup';
 import Toast from '@components/Toast';
 
-function App() {
+import { initaliseModelData } from '@constants/chat';
+
+function App()
+{
+  const initalizeModelData = async () =>
+  {
+    const initalizeModelDataResult = await initaliseModelData();
+    if (!initalizeModelDataResult)
+    {
+      alert("Failed getting model data from OpenRouterAI API.\nTry restarting or refreshing.\n\n(Currently default models will be shown that may include deprecated model or invalid information.)")
+    }
+  }
+  initalizeModelData();
+
   const initialiseNewChat = useInitialiseNewChat();
   const setChats = useStore((state) => state.setChats);
   const setTheme = useStore((state) => state.setTheme);
   const setApiKey = useStore((state) => state.setApiKey);
   const setCurrentChatIndex = useStore((state) => state.setCurrentChatIndex);
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     document.documentElement.lang = i18n.language;
-    i18n.on('languageChanged', (lng) => {
+    i18n.on('languageChanged', (lng) =>
+    {
       document.documentElement.lang = lng;
     });
   }, []);
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     // legacy local storage
     const oldChats = localStorage.getItem('chats');
     const apiKey = localStorage.getItem('apiKey');
     const theme = localStorage.getItem('theme');
 
-    if (apiKey) {
+    if (apiKey)
+    {
       // legacy local storage
       setApiKey(apiKey);
       localStorage.removeItem('apiKey');
     }
 
-    if (theme) {
+    if (theme)
+    {
       // legacy local storage
       setTheme(theme as Theme);
       localStorage.removeItem('theme');
     }
 
-    if (oldChats) {
+    if (oldChats)
+    {
       // legacy local storage
-      try {
+      try
+      {
         const chats: ChatInterface[] = JSON.parse(oldChats);
-        if (chats.length > 0) {
+        if (chats.length > 0)
+        {
           setChats(chats);
           setCurrentChatIndex(0);
-        } else {
+        } else
+        {
           initialiseNewChat();
         }
-      } catch (e: unknown) {
+      } catch (e: unknown)
+      {
         console.log(e);
         initialiseNewChat();
       }
       localStorage.removeItem('chats');
-    } else {
+    } else
+    {
       // existing local storage
       const chats = useStore.getState().chats;
       const currentChatIndex = useStore.getState().currentChatIndex;
-      if (!chats || chats.length === 0) {
+      if (!chats || chats.length === 0)
+      {
         initialiseNewChat();
       }
       if (
         chats &&
         !(currentChatIndex >= 0 && currentChatIndex < chats.length)
-      ) {
+      )
+      {
         setCurrentChatIndex(0);
       }
     }

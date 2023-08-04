@@ -13,11 +13,57 @@ const dateString =
 // default system message obtained using the following method: https://twitter.com/DeminDimin/status/1619935545144279040
 export const _defaultSystemMessage =
   import.meta.env.VITE_DEFAULT_SYSTEM_MESSAGE ??
-  `You are ChatGPT, a large language model trained by OpenAI.
+  `You are a large language model.
 Carefully heed the user's instructions. 
 Respond using Markdown.`;
 
-export const modelOptions: ModelOptions[] = [
+export async function initaliseModelData(): Promise<boolean>
+{
+  var hasCompleted = false;
+  await fetch('https://openrouter.ai/api/v1/models')
+    .then(response => response.json())
+    .then(data =>
+    {
+      // clear default arrays
+      modelOptions = [];
+      defaultModel = "";
+      // @ts-ignore
+      modelMaxToken = {};
+      // @ts-ignore
+      modelCost = {};
+
+      // @ts-ignore
+      modelOptions = data.data.map(model => model.id);
+
+      if (modelOptions.length > 0)
+      {
+        defaultModel = modelOptions[0];
+      }
+
+      // @ts-ignore
+      data.data.forEach(model =>
+      {
+        // @ts-ignore
+        modelMaxToken[model.id] = model.context_length;
+
+        // @ts-ignore
+        modelCost[model.id] = {
+          prompt: { price: parseFloat(model.pricing.prompt), unit: 1000 },
+          completion: { price: parseFloat(model.pricing.completion), unit: 1000 },
+        }; 
+      });
+
+      hasCompleted = true;
+    })
+    .catch(error =>
+    {
+      console.error('Error:', error)
+    });
+
+  return hasCompleted;
+}
+
+export var modelOptions: ModelOptions[] = [
   'openai/gpt-3.5-turbo',
   'openai/gpt-3.5-turbo-16k',
   'openai/gpt-4',
@@ -30,9 +76,9 @@ export const modelOptions: ModelOptions[] = [
   'meta-llama/llama-2-70b-chat'
 ];
 
-export const defaultModel = 'openai/gpt-3.5-turbo';
+export var defaultModel = 'openai/gpt-3.5-turbo';
 
-export const modelMaxToken = {
+export var modelMaxToken = {
   'openai/gpt-3.5-turbo': 4096,
   'openai/gpt-3.5-turbo-16k': 16384,
   'openai/gpt-4': 8192,
@@ -45,7 +91,7 @@ export const modelMaxToken = {
   'meta-llama/llama-2-70b-chat': 100000,
 };
 
-export const modelCost = {
+export var modelCost = {
   'openai/gpt-3.5-turbo': {
     prompt: { price: 0.0015, unit: 1000 },
     completion: { price: 0.002, unit: 1000 },
