@@ -24,6 +24,9 @@ export async function initaliseModelData(): Promise<boolean>
     .then(response => response.json())
     .then(data =>
     {
+      if (!data.data) return;
+      if (data.data.length === 0) return;
+
       // clear default arrays
       modelOptions = [];
       defaultModel = "";
