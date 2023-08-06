@@ -30,7 +30,7 @@ function App()
       var fixDefaultModels = true;
 
       const initalizeModelDataResult = await initaliseModelData();
-      if (initalizeModelDataResult)
+      if (!initalizeModelDataResult)
       {
         fixDefaultModels = confirm("Failed getting model data from OpenRouterAI API.\nTry restarting or refreshing.\n\n(Currently default models will be shown that may include deprecated model or invalid information.)\n\nIf you proceed to continue, chats with the model that is not in the current list will be changed to the default model.");
       }
