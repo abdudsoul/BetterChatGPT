@@ -23,29 +23,37 @@ function App()
   const setApiKey = useStore((state) => state.setApiKey);
   const setCurrentChatIndex = useStore((state) => state.setCurrentChatIndex);
 
-  (async () =>
+  if (!isInitialized)
   {
-    const initalizeModelDataResult = await initaliseModelData();
-    if (!initalizeModelDataResult)
+    (async () =>
     {
-      alert("Failed getting model data from OpenRouterAI API.\nTry restarting or refreshing.\n\n(Currently default models will be shown that may include deprecated model or invalid information.)");
-    }
+      var fixDefaultModels = true;
 
-    const localChats = useStore.getState().chats;
-    if (localChats && localChats.length > 0)
-    {
-      for (var i = 0; i < localChats.length; i++)
+      const initalizeModelDataResult = await initaliseModelData();
+      if (initalizeModelDataResult)
       {
-        const chat: ChatInterface = localChats[i];
-        if (!modelOptions.includes(chat.config.model))
-        {
-          chat.config.model = defaultModel;
-        }
+        fixDefaultModels = confirm("Failed getting model data from OpenRouterAI API.\nTry restarting or refreshing.\n\n(Currently default models will be shown that may include deprecated model or invalid information.)\n\nIf you proceed to continue, chats with the model that is not in the current list will be changed to the default model.");
       }
-    }
 
-    setIsInitialized(true);
-  })();  
+      if (fixDefaultModels)
+      {
+        const localChats = useStore.getState().chats;
+        if (localChats && localChats.length > 0)
+        {
+          for (var i = 0; i < localChats.length; i++)
+          {
+            const chat: ChatInterface = localChats[i];
+            if (!modelOptions.includes(chat.config.model))
+            {
+              chat.config.model = defaultModel;
+            }
+          }
+        }
+      }      
+
+      setIsInitialized(true);
+    })();  
+  }
 
   useEffect(() =>
   {
