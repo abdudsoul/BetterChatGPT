@@ -1,6 +1,8 @@
 import { ShareGPTSubmitBodyInterface } from '@type/api';
 import { ConfigInterface, MessageInterface } from '@type/chat';
 import { isAzureEndpoint, isOpenRouterEndpoint } from '@utils/api';
+import { modelMaxToken } from '@constants/chat';
+import countTokens from '@utils/messageUtils';
 
 export const getChatCompletion = async (
   endpoint: string,
@@ -14,7 +16,6 @@ export const getChatCompletion = async (
     ...customHeaders,
   };
   if (apiKey) headers.Authorization = `Bearer ${apiKey}`;
-
   if (isAzureEndpoint(endpoint) && apiKey) {
     headers['api-key'] = apiKey;
 
@@ -39,13 +40,16 @@ export const getChatCompletion = async (
       headers['X-Title'] = "BetterChatGPT | OpenRouterAI";
   }
 
+  const tokenCount = countTokens(messages, config.model);
+  const maxTokens = Math.min(config.max_tokens, modelMaxToken[config.model] - tokenCount);
+
   const response = await fetch(endpoint, {
     method: 'POST',
     headers,
     body: JSON.stringify({
       messages,
       ...config,
-      max_tokens: undefined,
+      max_tokens: maxTokens,
     }),
   });
   if (!response.ok) throw new Error(await response.text());
@@ -66,7 +70,6 @@ export const getChatCompletionStream = async (
     ...customHeaders,
   };
   if (apiKey) headers.Authorization = `Bearer ${apiKey}`;
-
   if (isAzureEndpoint(endpoint) && apiKey) {
     headers['api-key'] = apiKey;
 
@@ -91,13 +94,16 @@ export const getChatCompletionStream = async (
       headers['X-Title'] = "BetterChatGPT | OpenRouterAI";
   }
 
+  const tokenCount = countTokens(messages, config.model);
+  const maxTokens = Math.min(config.max_tokens, modelMaxToken[config.model] - tokenCount)-1;
+
   const response = await fetch(endpoint, {
     method: 'POST',
     headers,
     body: JSON.stringify({
       messages,
       ...config,
-      max_tokens: undefined,
+      max_tokens: maxTokens,
       stream: true,
     }),
   });
