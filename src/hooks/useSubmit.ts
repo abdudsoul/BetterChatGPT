@@ -71,11 +71,7 @@ const useSubmit = () => {
       if (chats[currentChatIndex].messages.length === 0)
         throw new Error('No messages submitted!');
 
-      const messages = limitMessageTokens(
-        chats[currentChatIndex].messages,
-        chats[currentChatIndex].config.max_tokens,
-        chats[currentChatIndex].config.model
-      );
+      const messages = chats[currentChatIndex].messages
       if (messages.length === 0) throw new Error('Message exceed max token!');
 
       // no api key (free)
