@@ -143,8 +143,6 @@
     border-radius: 0.25rem;
     border-width: 1px;
     display: inline-flex;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
     padding: 0.5rem 0.75rem;
     pointer-events: auto;
   }
@@ -156,8 +154,24 @@
     border-color: rgba(0, 0, 0, 0.1);
     border-width: 1px;
     color: rgba(64, 65, 79, var(--tw-text-opacity));
+  }
+
+  html[font-size="sm"] .btn,
+  html[font-size="sm"] .btn-neutral {
     font-size: 0.875rem;
     line-height: 1.25rem;
+  }
+
+  html[font-size="md"] .btn,
+  html[font-size="md"] .btn-neutral {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+
+  html[font-size="lg"] .btn,
+  html[font-size="lg"] .btn-neutral {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
   }
 
   .btn-neutral:hover {
@@ -229,10 +243,26 @@
 
   .markdown ul li:before {
     content: '•';
-    font-size: 0.875rem;
-    line-height: 1.25rem;
     margin-left: -1rem;
     position: absolute;
+  }
+
+  html[font-size="sm"] .markdown ul li:before
+  {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  html[font-size="md"] .markdown ul li:before
+  {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+
+  html[font-size="lg"] .markdown ul li:before
+  {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
   }
 }
 
@@ -280,4 +310,73 @@
 .hljs-symbol,
 .hljs-title {
   color: #f22c3d;
+}
+
+html[font-size="sm"] .prose
+{
+  font-size: 0.875rem;
+}
+
+html[font-size="md"] .prose
+{
+  font-size: 1.125rem;
+}
+
+html[font-size="lg"] .prose
+{
+  font-size: 1.25rem;
+}
+
+/** Text XS **/
+html[font-size="sm"] .text-xs
+{
+  font-size: 0.75rem;
+}
+
+html[font-size="md"] .text-xs
+{
+  font-size: 0.875rem;
+}
+
+html[font-size="lg"] .text-xs
+{
+  font-size: 1rem;
+}
+
+/** Text SM **/
+html[font-size="sm"] .text-sm
+{
+  font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+
+html[font-size="md"] .text-sm
+{
+  font-size: 1rem;
+    line-height: 1.75rem;
+}
+
+html[font-size="lg"] .text-sm
+{
+  font-size: 1.125rem;
+    line-height: 1.75rem;
+}
+
+/** Text LG **/
+html[font-size="sm"] .text-lg
+{
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+html[font-size="md"] .text-lg
+{
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+html[font-size="lg"] .text-lg
+{
+  font-size: 1.5rem;
+  line-height: 2rem;
 }

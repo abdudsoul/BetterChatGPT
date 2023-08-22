@@ -6,6 +6,7 @@ import useCloudAuthStore from '@store/cloud-auth-store';
 import PopupModal from '@components/PopupModal';
 import SettingIcon from '@icon/SettingIcon';
 import ThemeSwitcher from '@components/Menu/MenuOptions/ThemeSwitcher';
+import FontSizeChanger from '@components/Menu/MenuOptions/FontSizeChanger';
 import LanguageSelector from '@components/LanguageSelector';
 import AutoTitleToggle from './AutoTitleToggle';
 import AdvancedModeToggle from './AdvencedModeToggle';
@@ -21,11 +22,13 @@ const SettingsMenu = () => {
   const { t } = useTranslation();
 
   const theme = useStore.getState().theme;
+  const fontSize = useStore.getState().fontSize;
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
+    document.documentElement.setAttribute('font-size', fontSize);
     document.documentElement.className = theme;
-  }, [theme]);
+  }, [theme, fontSize]);
   return (
     <>
       <a
@@ -45,6 +48,7 @@ const SettingsMenu = () => {
           <div className='p-6 border-b border-gray-200 dark:border-gray-600 flex flex-col items-center gap-4'>
             <LanguageSelector />
             <ThemeSwitcher />
+            <FontSizeChanger />
             <div className='flex flex-col gap-3'>
               <AutoTitleToggle />
               <EnterToSubmitToggle />

@@ -1,11 +1,13 @@
 import { StoreSlice } from './store';
 import { Theme } from '@type/theme';
+import { FontSize } from '@type/font-size';
 import { ConfigInterface, TotalTokenUsed } from '@type/chat';
 import { _defaultChatConfig, _defaultSystemMessage } from '@constants/chat';
 
 export interface ConfigSlice {
   openConfig: boolean;
   theme: Theme;
+  fontSize: FontSize;
   autoTitle: boolean;
   hideMenuOptions: boolean;
   advancedMode: boolean;
@@ -19,6 +21,7 @@ export interface ConfigSlice {
   totalTokenUsed: TotalTokenUsed;
   setOpenConfig: (openConfig: boolean) => void;
   setTheme: (theme: Theme) => void;
+  setFontSize: (fontSize: FontSize) => void;
   setAutoTitle: (autoTitle: boolean) => void;
   setAdvancedMode: (advancedMode: boolean) => void;
   setDefaultChatConfig: (defaultChatConfig: ConfigInterface) => void;
@@ -35,6 +38,7 @@ export interface ConfigSlice {
 export const createConfigSlice: StoreSlice<ConfigSlice> = (set, get) => ({
   openConfig: false,
   theme: 'dark',
+  fontSize: 'sm',
   hideMenuOptions: false,
   hideSideMenu: false,
   autoTitle: false,
@@ -56,6 +60,12 @@ export const createConfigSlice: StoreSlice<ConfigSlice> = (set, get) => ({
     set((prev: ConfigSlice) => ({
       ...prev,
       theme: theme,
+    }));
+  },
+  setFontSize: (fontSize: FontSize) => {
+    set((prev: ConfigSlice) => ({
+      ...prev,
+      fontSize: fontSize,
     }));
   },
   setAutoTitle: (autoTitle: boolean) => {

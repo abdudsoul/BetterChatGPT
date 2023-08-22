@@ -12,6 +12,7 @@ import ApiPopup from '@components/ApiPopup';
 import Toast from '@components/Toast';
 
 import { initaliseModelData, modelOptions, defaultModel } from '@constants/chat';
+import { FontSize } from '@type/font-size';
 
 function App()
 {
@@ -20,6 +21,7 @@ function App()
   const initialiseNewChat = useInitialiseNewChat();
   const setChats = useStore((state) => state.setChats);
   const setTheme = useStore((state) => state.setTheme);
+  const setFontSize = useStore((state) => state.setFontSize);
   const setApiKey = useStore((state) => state.setApiKey);
   const setCurrentChatIndex = useStore((state) => state.setCurrentChatIndex);
 
@@ -70,6 +72,7 @@ function App()
     const oldChats = localStorage.getItem('chats');
     const apiKey = localStorage.getItem('apiKey');
     const theme = localStorage.getItem('theme');
+    const fontSize = localStorage.getItem('fontSize');
 
     if (apiKey)
     {
@@ -83,6 +86,13 @@ function App()
       // legacy local storage
       setTheme(theme as Theme);
       localStorage.removeItem('theme');
+    }
+
+    if (fontSize)
+    {
+      // legacy local storage
+      setFontSize(fontSize as FontSize);
+      localStorage.removeItem('fontSize');
     }
 
     if (oldChats)

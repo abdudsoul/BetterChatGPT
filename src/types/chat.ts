@@ -1,5 +1,6 @@
 import { Prompt } from './prompt';
 import { Theme } from './theme';
+import { FontSize } from './font-size';
 
 export type Role = 'user' | 'assistant' | 'system';
 export const roles: Role[] = ['user', 'assistant', 'system'];
@@ -160,4 +161,9 @@ export interface LocalStorageInterfaceV7oV8
   foldersName: string[];
   foldersExpanded: boolean[];
   folders: FolderCollection;
+}
+
+export interface LocalStorageInterfaceV8oV9
+  extends LocalStorageInterfaceV7oV8 {
+  fontSize: FontSize;
 }
